@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link href="{% static 'nav/style.css' %}" rel="stylesheet" type="text/css">
+    <title>Chat</title>
+    <style>
+        .room-list{
+            height: 100%;
+        }
+        .room-image-header{
+            display: flex;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .heading{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-right: 3px;
+            margin: 20px;
+            width: 95%;
+            min-height: 50px;
+            background-color: white;
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<body>
+    <nav>
+        <div class="logo">
+            <h4>Connect-e-Fans</h4>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/rooms">All Rooms</a></li>
+            <li><div class="profile-image"><img src="{{instance.image.url}}" alt=""></div></li>
+            <li><a href="/profile">{{instance.username}}</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line11"></div>
+            <div class="line21"></div>
+            <div class="line31"></div>
+        </div>
+    </nav>
+    <section class="main">
+        <section class="glass">
+            <div class="right-pane">
+                <div class="room-list" id="my-rooms">
+                    <div class="heading">
+                        All Rooms
+                    </div>
+                    {% for room in rooms%}
+                        <div class="room">
+                            <div class="div-start">
+                                <div class="room-image">
+                                    <img src="{{room.image.url}}"  height="70" width="70">
+                                </div>
+                            </div>
+                            <div class="div-mid">
+                                <a href="room/{{room.name}}">{{room.name}}</a>
+                            </div>
+                            <div class="div-end">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </section>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+</body>
+<script src="{% static 'nav/app.js' %}"></script>
+</html>

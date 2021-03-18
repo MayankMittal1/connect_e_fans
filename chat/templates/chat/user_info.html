@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link href="{% static 'nav/style.css' %}" rel="stylesheet" type="text/css">
+    <title>Chat</title>
+    <style>
+        .room-image-header{
+            display: flex;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .heading{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-right: 3px;
+            margin: 20px;
+            width: 95%;
+            min-height: 50px;
+            background-color: white;
+            border-radius: 1rem;
+        }
+        .header{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+            padding: 5px;
+            top: 0%;
+            width: 100%;
+            height: 20vh;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2rem;
+            z-index: 4;
+        }
+    </style>
+</head>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<body>
+    <div class="dark-overlay"></div>
+    <nav>
+        <div class="logo">
+            <h4>Connect-e-Fans</h4>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/rooms">All Rooms</a></li>
+            <li><div class="profile-image"><img src="{{instance.image.url}}" alt=""></div></li>
+            <li><a href="/profile">{{instance.username}}</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line11"></div>
+            <div class="line21"></div>
+            <div class="line31"></div>
+        </div>
+    </nav>
+    <section class="main">
+        <section class="glass">
+            <div class="right-pane">
+                <div class="header">
+                    <div class="room-image-header">
+                        <img src="{{user_info.image.url}}" alt="" height="100px" width="100px">
+                    </div>
+                        {{user_info.username}}
+                </div>
+                <div class="room-list" id="my-rooms">
+                    <div class="heading">
+                        Common Rooms
+                    </div>
+                    {% for room in rooms%}
+                        <div class="room">
+                            <div class="div-start">
+                                <div class="room-image">
+                                    <img src="{{room.image.url}}"  height="70" width="70">
+                                </div>
+                            </div>
+                            <div class="div-mid">
+                                <a href="room/{{room.name}}">{{room.name}}</a>
+                            </div>
+                            <div class="div-end">
+                                <a href="/chat/{{room.name}}" class="btn-lg">Chat</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="room-list" style="display: none;" id="searched-rooms">
+                </div>
+            </div>
+        </section>
+    </section>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+</body>
+<script src="{% static 'nav/app.js' %}"></script>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link href="{% static 'nav/style.css' %}" rel="stylesheet" type="text/css">
+    <title>Chat</title>
+    <style>
+        .room-image-header {
+            display: flex;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .heading {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-right: 3px;
+            margin: 20px;
+            width: 95%;
+            min-height: 50px;
+            background-color: white;
+            border-radius: 1rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+            padding: 5px;
+            top: 0%;
+            width: 100%;
+            min-height: 170px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2rem;
+            z-index: 4;
+        }
+    </style>
+</head>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<body>
+    <div class="dark-overlay"></div>
+    <nav>
+        <div class="logo">
+            <h4>Connect-e-Fans</h4>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/rooms">All Rooms</a></li>
+            <li><div class="profile-image"><img src="{{instance.image.url}}" alt=""></div></li>
+            <li><a href="/profile">{{instance.username}}</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line11"></div>
+            <div class="line21"></div>
+            <div class="line31"></div>
+        </div>
+    </nav>
+
+
+    <section class="main">
+        <section class="glass">
+            <div class="right-pane">
+                <div class="header">
+                    <div class="room-image-header">
+                        <img src="{{room.image.url}}" alt="" height="100px" width="100px">
+                    </div>
+                    {{room.name}}
+                </div>
+                {% if editable == "0" %}
+                <div class="room-list" id="my-rooms">
+                    <div class="heading">
+                        You Dont Have Permissions To edit Room
+                    </div>
+                </div>
+                {% else %}
+                <div class="room-list" id="my-rooms">
+                    <div class="heading">
+                        Edit Room
+                    </div>
+                    <div class="room-edit-form">
+                        <form action="/save_room" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row room-inp-div">
+                                <label for="name">Room Name</label>
+                                <input type="text" class="form-input" name="name" value="{{room.name}}" readonly>
+                            </div>
+                            <div class="row room-inp-div">
+                                <label for="description">Description</label>
+                                <input type="text" class="form-input" name="description" value="{{room.description}}">
+                            </div>
+                            <div class="row room-inp-div">
+                                <label for="image">Room Icon</label>
+                                <input type="file" class="form-input" name="image">
+                            </div>
+                            <div class="row room-inp-div" style="align-items: center; justify-content: center;">
+                                <input type='submit' value='Submit' class="btn-lg">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+    </section>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+</body>
+<script src="{% static 'nav/app.js' %}"></script>
+
+</html>

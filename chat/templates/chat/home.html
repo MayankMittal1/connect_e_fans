@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link href="{% static 'nav/style.css' %}" rel="stylesheet" type="text/css">
+    <title>Chat</title>
+</head>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<body>
+    <div class="dark-overlay"></div>
+    <nav>
+        <div class="logo">
+            <h4>Connect-e-Fans</h4>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/rooms">All Rooms</a></li>
+            <li><div class="profile-image"><img src="{{instance.image.url}}" alt=""></div></li>
+            <li><a href="/profile">{{instance.username}}</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line11"></div>
+            <div class="line21"></div>
+            <div class="line31"></div>
+        </div>
+    </nav>
+    <section class="main">
+        <section class="glass">
+            <div class="right-pane">
+                <div class="header">
+                    <div class="search-box-div">
+                        <input type="text" class="search-box" placeholder="Type Room Name" id="search">
+                        <hr class="break">
+                        <div class="search-button">
+                            <svg width="24" height="24" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"viewBox="0 0 512.005 512.005" style="enable-background:new 0 0 512.005 512.005;" xml:space="preserve">
+                                    <g>
+                                        <g>
+                                            <path d="M505.749,475.587l-145.6-145.6c28.203-34.837,45.184-79.104,45.184-127.317c0-111.744-90.923-202.667-202.667-202.667
+                                                S0,90.925,0,202.669s90.923,202.667,202.667,202.667c48.213,0,92.48-16.981,127.317-45.184l145.6,145.6
+                                                c4.16,4.16,9.621,6.251,15.083,6.251s10.923-2.091,15.083-6.251C514.091,497.411,514.091,483.928,505.749,475.587z
+                                                M202.667,362.669c-88.235,0-160-71.765-160-160s71.765-160,160-160s160,71.765,160,160S290.901,362.669,202.667,362.669z"/>
+                                        </g>
+                                    </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="plus-button">
+                        <div class="line1"></div>
+                        <div class="line2"></div>
+                    </div>
+                </div>
+                <div class="room-list" id="my-rooms">
+                    {% for room in joined_rooms%}
+                        <div class="room">
+                            <div class="div-start">
+                                <div class="room-image">
+                                    <img src="{{room.image.url}}"  height="70" width="70">
+                                </div>
+                            </div>
+                            <div class="div-mid">
+                                <a href="room/{{room.name}}">{{room.name}}</a>
+                            </div>
+                            <div class="div-end">
+                                <a href="chat/{{room.name}}" class="btn-lg">Chat</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="room-list" style="display: none;" id="searched-rooms">
+                </div>
+            </div>
+            <div class="new-room">
+                <div class="new-room-heading">
+                    <div class="cross-button">
+                        <div class="line1c"></div>
+                        <div class="line2c"></div>
+                    </div>
+                    <div ><h1>Create New Room</h1></div>
+                </div>
+                <div class="new-room-form-div">
+                    <form enctype="multipart/form-data" method="post" action="create_room">
+                    {% csrf_token %}
+                        <div class="row room-inp-div">
+                            <label for="name">Room Name</label>
+                            <input type="text" class="form-input" name="name" autocomplete="off">
+                        </div>
+                        <div class="row room-inp-div">
+                            <label for="image">Room Icon</label>
+                            <input type="file" class="form-input" name="image">
+                            <input type='submit' value='submit' class="btn-lg">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </section>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+</body>
+<script>
+    const newRoomButton=document.querySelector('.plus-button')
+    const newRoom=document.querySelector('.new-room')
+    const closeRoomButton=document.querySelector('.cross-button')
+    const line1=document.querySelector('.line1')
+    const line2=document.querySelector('.line2')
+    const profileButton=document.querySelector('.profile')
+    const profilePane=document.querySelector('.left-pane-profile')
+    const rightPane=document.querySelector('.right-pane')
+
+    newRoomButton.addEventListener('click',function(e) {
+        newRoomButton.style.display="none";
+        newRoom.classList.toggle('new-room-active')
+        line1.classList.toggle('line1-toggle')
+        line2.classList.toggle('line2-toggle')
+        rightPane.style.width="0px";
+        rightPane.style.visibility="hidden";
+        newRoomButton.style.visibility="hidden";
+    });
+    closeRoomButton.addEventListener('click',function(e) {
+        newRoomButton.style.display="flex";
+        newRoom.classList.toggle('new-room-active')
+        line1.classList.toggle('line1-toggle')
+        line2.classList.toggle('line2-toggle')
+        rightPane.style.width="100%";
+        rightPane.style.visibility="visible";
+        newRoomButton.style.visibility="visible";
+    });
+</script>
+<script>
+    roomlist=document.querySelector('#searched-rooms')
+    document.querySelector('.search-box').focus();
+    document.querySelector('.search-box').onkeyup = function(e) {
+        if(document.querySelector('.search-box').value==""){
+            document.querySelector('#my-rooms').style.display="flex";
+            document.querySelector('#searched-rooms').style.display="none";
+        }
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('.search-button').click();
+        }
+    };
+    $(".search-button").click(function(){
+        document.querySelector('#my-rooms').style.display="none";
+        document.querySelector('#searched-rooms').style.display="flex";
+        document.querySelector('#searched-rooms').innerHTML="";
+						 var query=document.querySelector('.search-box').value;
+						 if(query!=""){
+								 $.ajax({
+										 url:"{% url 'search_room' %}",
+										 type:'POST',
+										 data:{query:query}
+								 })
+								 .done(function(response){
+                                     response.forEach(room => {
+                                         roomimgdiv=document.createElement('div')
+                                         roomname=document.createElement('div')
+                                         roomimgdiv.className='room-image'
+                                         roomImage=document.createElement('img')
+                                         roomImage.src=room.image
+                                         roomimgdiv.appendChild(roomImage)
+                                         joinLink=document.createElement('a')
+                                         joinLink.href='/join/'+room.name
+                                         joinLink.innerText="Join"
+                                         joinLink.className='btn-lg'
+                                         roomdiv=document.createElement('div')
+                                         roomdiv.classList.add('room')
+                                         roomname.innerHTML=room.name;
+                                         roomdiv.appendChild(roomimgdiv)
+                                         roomdiv.appendChild(roomname)
+                                         roomdiv.appendChild(joinLink)
+                                         roomlist.appendChild(roomdiv)
+                                     });
+								 })
+								 .fail(function(){
+										 console.log("failed");
+								 })
+						 }
+				 });
+
+</script>
+<script src="{% static 'nav/app.js' %}"></script>
+</html>

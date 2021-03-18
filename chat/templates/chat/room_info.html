@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link href="{% static 'nav/style.css' %}" rel="stylesheet" type="text/css">
+    <title>Chat</title>
+    <style>
+        
+            @keyframes navLinkFade{
+                from{
+                    opacity: 0;
+                    transform: translatex(50px);
+                }
+                to{
+                    opacity: 1;
+                    transform: translateX(0px);
+                }
+            }
+            .toggle .line11{
+                transform: rotate(-45deg) translate(-5px,6px);
+            }
+            .toggle .line21{
+                opacity: 0;
+            }
+            .toggle .line31{
+                transform: rotate(45deg) translate(-5px,-6px);
+            }
+        .room-image-header{
+            display: flex;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .header{
+            display: flex;
+            justify-content:space-around;
+            align-items: center;
+            position: relative;
+            padding: 5px;
+            top: 0%;
+            width: 100%;
+            min-height: 170px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2rem;
+            z-index: 4;
+        }
+    </style>
+</head>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<body>
+    <nav>
+        <div class="logo">
+            <h4>Connect-e-Fans</h4>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/rooms">All Rooms</a></li>
+            <li><div class="profile-image"><img src="{{instance.image.url}}" alt=""></div></li>
+            <li><a href="/profile">{{instance.username}}</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line11"></div>
+            <div class="line21"></div>
+            <div class="line31"></div>
+        </div>
+    </nav>
+    <section class="main">
+        <section class="glass">
+            <div class="right-pane">
+                <div class="header">
+                    <div class="room-image-header">
+                        <img src="{{room.image.url}}" alt="" height="100px" width="100px">
+                    </div>
+                        {{room.name}}
+                        {% if editable == "1" %}
+                        <a href="/edit/{{room.name}}" class="btn-lg">Edit Room</a>
+                        {% endif %}
+                </div>
+                <div class="room-list" id="my-rooms">
+                    {% for room_member in room_members%}
+                    {% if room_member.username == instance.username %}
+                        <div class="room">
+                            <div class="div-start">
+                                <div class="room-image">
+                                    <img src="{{room_member.image}}"  height="70" width="70">
+                            </div>
+                        </div>
+                            <div class="div-mid">
+                                <p>You</p>
+                                {% if room_member.admin == "1" %}
+                                    <p class="admin-tag">admin</p>
+                                {%endif%}
+                            </div>
+                            <div class="div-end"></div>
+                        </div>
+                    {%else%}
+                        <div class="room">
+                            <div class="div-start">
+                                <div class="room-image">
+                                    <img src="{{room_member.image}}"  height="70" width="70">
+                                </div>
+                            </div>
+                            <div class="div-mid">
+                                {{room_member.username}}
+                                {% if room_member.admin == "1" %}
+                                    <p class="admin-tag">admin</p>
+                                {%endif%}
+                            </div>
+                            <div class="div-end">
+                                <a href="/user/{{room_member.username}}" class="btn">View User</a>
+                                {% if editable == "1" %}
+                                    {% if room_member.admin == "1" %}
+                                        <a href="/remove_admin?user={{room_member.username}}&room={{room.name}}" class="btn">Remove Admin</a>
+                                    {%else%}
+                                        <a href="/add_admin?user={{room_member.username}}&room={{room.name}}" class="btn">Make Admin</a>
+                                    {%endif%}
+                                    
+                                    <a href="/delete_user?user={{room_member.username}}&room={{room.name}}" class="btn">Remove User</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {%endif%}
+                    {% endfor %}
+                </div>
+                <div class="room-list" style="display: none;" id="searched-rooms">
+                </div>
+            </div>
+        </section>
+    </section>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+</body>
+<script src="{% static 'nav/app.js' %}"></script>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login/Signup</title>
+{% load static %}
+<!--Custom Theme files-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{% static 'index/css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
+<!--web-fonts-->
+<link href='//fonts.googleapis.com/css?family=Signika:400,300,600,700' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+<!--//web-fonts-->
+<!--js-->
+<script src="{% static 'index/js/jquery.min.js' %}"></script>
+<script src="{% static 'index/js/easyResponsiveTabs.js' %}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion           
+				width: 'auto', //auto or any width like 600px
+				fit: true   // 100% fit in a container
+			});
+		});
+	   </script>
+<!--//js-->
+</head>
+<body>
+	<!-- main -->
+	<div class="main">
+		<div class="login-form">
+			<div class="login-right">
+				<div class="sap_tabs">
+					<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
+						<ul class="resp-tabs-list">
+							<li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>Login</span></li>
+							<li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><label>/</label><span>Sign up</span></li>
+							<div class="clear"> </div>
+						</ul>				  	 
+						<div class="resp-tabs-container">
+							<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
+								<div class="login-top">
+									<form id="login_form">
+                    {% csrf_token %}
+										<input type="text" class="email" placeholder="Username" required="" name="username"/>
+										<input type="password" class="password" placeholder="Password" required="" name="password"/>		
+                    <div class="submit" style="margin-top: 40px;">
+                      <input type="submit" value="LOGIN"/>
+                  </div>
+									</form>
+									<div class="login-bottom login-bottom1">
+                    <p id="errormessage1"></p>
+										<div class="clear"></div>
+									</div>	
+                  <a href="/forgetpassword">Forgot password?</a>
+								</div>
+							</div>
+							<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
+								<div class="login-top sign-top">
+									<form id="signup_form" method="POST">
+                    {% csrf_token %}
+										<input type="text" class="name active" placeholder="First Name" required="" name="first_name"/>
+										<input type="text" class="name active" placeholder="Last Name" required="" name="last_name"/>
+										<input type="text" class="name active" placeholder="UserName" required="" name="username"/>
+										<input type="text" class="email" placeholder="Email" required="" name="email"/>
+										<input type="password" class="password" placeholder="Password" required="" name="password"/>	
+                    										<div class="submit" style="margin-top: 50px;">
+
+												<input type="submit" value="Signup"/>
+
+										</div>	
+									</form>
+									<div class="login-bottom">
+                    <p id="errormessage2"></p>
+										<div class="clear"></div>
+									</div>		
+								</div>
+							</div>
+						</div>							
+					</div>	
+				</div>
+			</div>
+			<div class="clear"> </div>
+		</div>
+	</div>
+  
+	<!--//main -->	
+</body>
+
+   <script type="text/javascript">
+    // form upload
+    $('#login_form').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+          url: "{% url 'login' %}",
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+              if(response.login=="1"){
+                window.location = "{% url 'home' %}";
+              }
+              p=document.querySelector('#errormessage1')
+              p.style.color='red'
+              p.innerText=response.message
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    $('#signup_form').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+          url: "{% url 'signup' %}",
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+              p=document.querySelector('#errormessage2')
+                  if(response.created=='1'){
+                    p.style.color='green'
+                    p.innerText=response.message
+					document.getElementById('signup_form').reset()
+                }
+                else{
+                    p.style.color='red'
+                    p.innerText=response.message
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    </script>
+</html>

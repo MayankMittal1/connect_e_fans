@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <title>Profile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+    <link rel="stylesheet" href="{% static 'sign_in/bootstrap.min.css' %}">
+    <link href="{% static 'tailwind/tailwind.min.css' %}" rel="stylesheet">
+    <script src="{% static 'sign_in/jQuery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/styleprofile.css' %}">
+    <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{% static 'bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link href="{% static 'nav/style.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'login/login.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{% static 'home/style.css' %}">
+<link href="{% static 'nav/style.css' %}" rel="stylesheet" type="text/css">
+
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'form/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'form/fonts/iconic/css/material-design-iconic-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'form/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'form/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'form/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'form/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'form/vendor/daterangepicker/daterangepicker.css' %}">
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <h4>Connect-e-Fans</h4>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/rooms">All Rooms</a></li>
+            <li><div class="profile-image"><img src="{{instance.image.url}}" id="profilepic"></div></li>
+            <li><a href="/profile">{{instance.username}}</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line11"></div>
+            <div class="line21"></div>
+            <div class="line31"></div>
+        </div>
+    </nav>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="view-account">
+        <section class="module">
+            <div class="module-inner">
+                <div class="side-bar">
+                    <div class="user-info">
+                        <img class="img-profile img-circle img-responsive center-block" src="{{ instance.image.url }}" alt="" id="profilepic">
+                        <ul class="meta list list-unstyled">
+                            <li class="name">{{instance.firstName }} {{ instance.lastName }}</li>
+                            <li class="email"><a href="#">{{ instance.email }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-panel">
+                    <h2 class="title">Profile</h2>
+                    <form class="form-horizontal" enctype="multipart/form-data" method="POST" id="update-image">
+                        {% csrf_token %}
+                        <fieldset class="fieldset">
+                            <h3 class="fieldset-title">Personal Info</h3>
+                            <div class="form-group avatar">
+
+                                <div class="form-inline col-md-10 col-sm-9 col-xs-12">
+                                    <input type="file" class="file-uploader pull-left" name="image">
+                                    <button type="submit" class="btn btn-primary">Update Image</button>
+                                </div>
+                            </div>
+                            </form>
+                            <form class="form-horizontal"method="POST" id="update_pass">
+                                {% csrf_token %}
+                                <div class="form-inline col-md-10 col-sm-9 col-xs-12">
+                                    <p id="errorMessage"></p>
+                                    <div class="col-md-10 col-sm-9 col-xs-12 p-2">
+                                        <input type="password" class="form-control" placeholder="Old Password" name="old_pass" id="old_pass">
+                                    </div>
+                                    <div class="col-md-10 col-sm-9 col-xs-12 p-2">
+                                        <input type="password" class="form-control" placeholder="New Password" name="new_pass" id="new_pass">
+                                    </div>
+                                    
+                                    <div class="col-md-10 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0 p-2">
+                                        <input class="btn btn-primary" type="submit" value="Update Password">
+                                    </div>
+                                </div>
+                                <fieldset class="fieldset p-4">
+                                    <h3 class="fieldset-title">Personal Info</h3>
+                                    <div class="form-group avatar">
+
+                                    </div>
+                                    </form>
+                            <form class="form-horizontal" method="POST" id="updateInfo">
+                                {% csrf_token %}
+                            <div class="form-group">
+                                <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
+                                <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" placeholder="Username" value="{{ instance.username }}" readonly>
+                                </div>
+                            </div>
+        
+                            <div class="form-group">
+                                <label class="col-md-2 col-sm-3 col-xs-12 control-label">First Name</label>
+                                <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" placeholder="First Name" value="{{ instance.firstName }}" name="first_name" id="first_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 col-sm-3 col-xs-12 control-label">Last Name</label>
+                                <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" placeholder="Last Name" value="{{instance.lastName}}" name="last_name" id="last_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 col-sm-3 col-xs-12 control-label">About</label>
+                                <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <textarea class="form-control" placeholder="About" name="about" id="about" >{{instance.about}}</textarea>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="fieldset">
+                            <h3 class="fieldset-title">Contact Info</h3>
+                            <div class="form-group">
+                                <label class="col-md-2  col-sm-3 col-xs-12 control-label">Phone Number</label>
+                                <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <input type="number" class="form-control" value="{{instance.phonenumber}}" name="phone" id="phone" >
+                                    <p class="help-block">Your phone number</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <hr>
+                        <div class="form-group">
+                            <div class="col-md-10 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
+                                <input class="btn btn-primary" type="submit" value="Update Profile">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script 
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script type="text/javascript">
+    // form upload
+    $('#update-image').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+            url: "{% url 'updateProfileImage' %}",
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                pp=document.querySelectorAll('#profilepic')
+                pp.forEach(element => {
+                    element.src=response.image
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    $('#update_pass').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        document.querySelector('#old_pass').value=""
+        document.querySelector('#new_pass').value=""
+        $.ajax({
+            url: "{% url 'updatePassword' %}",
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                p=document.querySelector('#errorMessage')
+                if(response.updated=='1'){
+                    p.style.color='green'
+                    p.innerText=response.message
+                }
+                else{
+                    p.style.color='red'
+                    p.innerText=response.message
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    $('#updateInfo').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+            url: "{% url 'updateInfo' %}",
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                firstname=document.querySelector('#first_name')
+                lastname=document.querySelector('#last_name')
+                about=document.querySelector('#about')
+                phone=document.querySelector('#phone')
+                firstname.value=response.firstName
+                lastname.value=response.lastName
+                about.innerText=response.about
+                phone.value=response.phone
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    // end
+   </script>
+   <script src="{% static 'nav/app.js' %}"></script>
+</body>
