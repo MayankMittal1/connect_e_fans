@@ -27,7 +27,7 @@ SECRET_KEY = '$_c^y83wsvmii6i-%%gtl-!eh-c@!(jg$e_-o(c256$^!3^fq-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dba480f4d23a.ngrok.io','localhost']
 
 
 # Application definition
@@ -78,12 +78,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'connect_e_fans.wsgi.application'
 ASGI_APPLICATION = 'connect_e_fans.asgi.application'
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
         },
-        "ROUTING": "chat.routing.channel_routing",
     },
 }
 

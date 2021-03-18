@@ -85,16 +85,16 @@
                     <div ><h1>Create New Room</h1></div>
                 </div>
                 <div class="new-room-form-div">
-                    <form enctype="multipart/form-data" method="post" action="create_room">
+                    <form enctype="multipart/form-data" id="create-room">
                     {% csrf_token %}
                         <div class="row room-inp-div">
                             <label for="name">Room Name</label>
-                            <input type="text" class="form-input" name="name" autocomplete="off">
+                            <input type="text" class="form-input" name="name" autocomplete="off" required>
                         </div>
                         <div class="row room-inp-div">
                             <label for="image">Room Icon</label>
-                            <input type="file" class="form-input" name="image">
-                            <input type='submit' value='submit' class="btn-lg">
+                            <input type="file" class="form-input" name="image" accept=".jpg,.png,.jpeg">
+                            <input type='submit' value='submit' class="btn-lg" id="create-room-submit">
                         </div>
                     </form>
                 </div>
@@ -182,6 +182,28 @@
 								 })
 						 }
 				 });
+
+        $('#create-room').submit(function(e){
+
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+            document.getElementById("create-room-submit").disabled=true;
+            document.getElementById("create-room-submit").style.background='grey'
+        $.ajax({
+          url: "{% url 'create_room' %}",
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                alert(response.message)
+                location.reload()
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+
 
 </script>
 <script src="{% static 'nav/app.js' %}"></script>

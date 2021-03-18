@@ -70,7 +70,7 @@ def login(request):
         user = User.objects.filter(username=userName, password=password)
         if user:
             request.session['username'] = userName
-            return JsonResponse({'login':'1'})
+            return JsonResponse({'login':'1','message':""})
         else:
             return JsonResponse({'login':'0','message':"No such user exists"})
     
@@ -110,6 +110,9 @@ def create_room(request):
         username = request.session['username']
         user = User.objects.filter(username=username)[0]
         name = request.POST.get('name').lower()
+        rooms=Room.objects.filter(name=name)
+        if rooms:
+            return JsonResponse({'created':'0','message':"Room already exists"})
         image = request.FILES.get('image')
         if image is not None:
             room = Room.objects.create(name=name, image=image)
@@ -119,7 +122,7 @@ def create_room(request):
         room.members.add(user)
         room.admins.add(user)
         room.save()
-        return redirect('/home')
+        return JsonResponse({'created':'1','message':"Room created successfully"})
     else:
         return redirect('/index')
 

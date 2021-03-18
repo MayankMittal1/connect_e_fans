@@ -35,6 +35,9 @@
     height:auto;
     width:auto;
 }
+.margin{
+    margin-left: 10px;
+}
 
     </style>
     <meta charset="UTF-8">
@@ -84,7 +87,6 @@
                                 {% if message.image %}
                                 <img src="{{message.image.url}}" class="image-message-img">
                                 {%endif%}
-                                <br>
                                 {{message.content}}
                             </div>
                         </div>
@@ -100,7 +102,6 @@
                                 {% if message.image %}
                                 <img src="{{message.image.url}}" class="image-message-img">
                                 {%endif%}
-                                <br>
                             {{message.content}}
                             </div>
                         </div>
@@ -137,7 +138,7 @@
             <div class="image-form">
                 <form method="post" enctype="multipart/form-data" id="id_ajax_upload_form" novalidate>
                     {% csrf_token %}
-                                        <div><input type="file" name="image"></div>
+                                        <div><input type="file" name="image" accept=".jpg,.png,.jpeg"></div>
                     <div><input type="submit" class="btn-lg image-submit" value="Send" style="align-items: center;"></div>
                     
                 </form>
@@ -177,8 +178,9 @@
             var message_body=document.createElement('div');
             var name=document.createElement('a');
             var time=document.createElement('p');
-            name.innerText=author
-            time.innerText=message['timestamp']
+            name.innerText=author+"\t"
+            time.innerText="\t"+message['timestamp']
+            time.classList.add('margin')
             outer_message_box.className = 'message'
             message_header.className='message-header'
             message_body.className='message-body'

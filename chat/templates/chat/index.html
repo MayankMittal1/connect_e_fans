@@ -103,10 +103,8 @@
               if(response.login=="1"){
                 window.location = "{% url 'home' %}";
               }
-              p=document.querySelector('#errormessage1')
-              p.style.color='red'
-              p.innerText=response.message
-            },
+			  alert(response.message)
+			},
             cache: false,
             contentType: false,
             processData: false
@@ -121,17 +119,8 @@
             type: 'POST',
             data: formData,
             success: function (response) {
-              p=document.querySelector('#errormessage2')
-                  if(response.created=='1'){
-                    p.style.color='green'
-                    p.innerText=response.message
-					document.getElementById('signup_form').reset()
-                }
-                else{
-                    p.style.color='red'
-                    p.innerText=response.message
-                }
-            },
+				alert(response.message)
+						},
             cache: false,
             contentType: false,
             processData: false

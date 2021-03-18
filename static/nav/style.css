@@ -4,6 +4,7 @@
      box-sizing: border-box;
  }
  body{
+     overflow: hidden;
      display: flex;
      justify-content: flex-start;
      flex-direction: column;
