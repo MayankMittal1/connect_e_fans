@@ -103,7 +103,9 @@
               if(response.login=="1"){
                 window.location = "{% url 'home' %}";
               }
+			  else{
 			  alert(response.message)
+			  }
 			},
             cache: false,
             contentType: false,
@@ -114,6 +116,7 @@
         e.preventDefault();
         $form = $(this)
         var formData = new FormData(this);
+		$('#signup_form').trigger("reset");
         $.ajax({
           url: "{% url 'signup' %}",
             type: 'POST',
